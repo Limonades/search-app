@@ -1,0 +1,14 @@
+.label {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-txt {
+  margin-bottom: 8px;
+  opacity: .5;
+}
+
+.input {
+  padding: 8px 14px;
+  min-width: 200px;
+}
