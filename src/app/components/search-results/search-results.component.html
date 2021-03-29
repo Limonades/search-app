@@ -3,4 +3,11 @@
 <!--    TODO ?-->
     <img src="{{img.userImageURL}}" alt="{{img.tags}}">
   </figure>
+
+  <div
+    class="_search-placeholder"
+    *ngIf="!images?.length && isQuery"
+  >
+    There are no images that suits your criteria
+  </div>
 </div>

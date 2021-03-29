@@ -6,11 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
-  imagesResponse?: Array<object>;
+  imagesResponse?: object;
+  isQuery?: boolean;
 
   constructor() { }
 
-  getImages(resp: Array<object>): void {
-    this.imagesResponse = resp;
+  getImages(data: object): void {
+    // TODO ?
+    // @ts-ignore
+    this.imagesResponse = data.response;
+    // @ts-ignore
+    this.isQuery = data.value.trim().length;
   }
 }

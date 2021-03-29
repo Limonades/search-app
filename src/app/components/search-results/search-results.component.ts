@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SearchResultsComponent {
   @Input() images?: any;
+  @Input() isQuery?: boolean;
 
   constructor() { }
 }

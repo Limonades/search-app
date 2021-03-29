@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiResponseModel } from '../../models/api-response.model';
-import { apiKey, apiUrl } from '../../components/consts/pixabay-api.const';
+import { apiKey, apiUrl } from '../../consts/pixabay-api.const';
 
 @Injectable({
   providedIn: 'root'
