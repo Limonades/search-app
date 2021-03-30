@@ -6,8 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent {
-  @Input() images?: any;
-  @Input() isQuery?: boolean;
-
   constructor() { }
 }

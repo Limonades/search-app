@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { SearchService } from '../../services/searchService/search.service';
 import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 
 @Component({
@@ -9,30 +11,33 @@ import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent {
-  @Output() searchValue$ = new EventEmitter<object>();
+export class SearchBarComponent implements OnInit{
+  public qtyOptions = SEARCH_OPTIONS.per_page.values;
 
-  public searchOptions = SEARCH_OPTIONS.per_page;
+  searchForm = new FormGroup({
+    query: new FormControl(''),
+    perPageQty: new FormControl(SEARCH_OPTIONS.per_page.default),
+  });
 
   constructor(
     private searchService: SearchService,
-  ) { }
+  ) {}
 
-  handleInput(e: Event): void {
-    const { value } = (e.target as HTMLTextAreaElement);
-
-    // TODO remake for 1 stream
-    this.searchService.getImages(value)
+  ngOnInit(): void {
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+      )
       .subscribe(
-        (resp) => {
-          this.searchValue$.emit({response: resp.hits, value});
-        }
-      );
-  }
+      (form) => {
+        const { query, perPageQty } = form;
 
-  onFilterChange(e: Event): void {
-    const { value } = (e.target as HTMLTextAreaElement);
-
-    this.searchService.setOutputQty(value);
+        this.searchService.getImages({
+          q: query,
+          per_page: perPageQty
+        });
+      }
+    );
   }
 }

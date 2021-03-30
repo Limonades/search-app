@@ -1,6 +1,10 @@
 :host {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: block;
   padding-top: 30px;
+
+  ._form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
