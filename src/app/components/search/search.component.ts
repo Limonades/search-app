@@ -12,7 +12,7 @@ export class SearchComponent {
   constructor() { }
 
   getImages(data: object): void {
-    // TODO ?
+    // TODO !!! interface
     // @ts-ignore
     this.imagesResponse = data.response;
     // @ts-ignore
