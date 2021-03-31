@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { SearchService } from '../../services/searchService/search.service';
+import { SearchFormDataModel } from '../../models/search-form-data.model';
+import { ApiResponseModel } from '../../models/api-response.model';
 
 @Component({
   selector: 'app-search',
@@ -6,16 +9,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
-  imagesResponse?: object;
-  isQuery?: boolean;
+  searchResult?: ApiResponseModel;
 
-  constructor() { }
+  constructor(
+    private searchService: SearchService,
+  ) { }
 
-  getImages(data: object): void {
-    // TODO !!! interface
-    // @ts-ignore
-    this.imagesResponse = data.response;
-    // @ts-ignore
-    this.isQuery = data.value.trim().length;
+  getSearchResult(data: SearchFormDataModel): void {
+    this.searchService.getRequest(data)
+      .subscribe(response => this.searchResult = response);
   }
 }

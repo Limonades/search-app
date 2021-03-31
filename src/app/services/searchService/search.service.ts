@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { ApiResponseModel } from '../../models/api-response.model';
 import { apiKey, apiUrl } from '../../consts/pixabay-api.const';
-import { Observable } from 'rxjs';
+import { SearchFormDataModel } from '../../models/search-form-data.model';
+import { SearchFormQueryParamsModel } from '../../models/search-form-query-params.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   private params = new HttpParams();
-  private imagesData?: ApiResponseModel;
 
   constructor(private http: HttpClient) {
     this.setParam({
@@ -18,19 +19,18 @@ export class SearchService {
     });
   }
 
-  getImages(query: object): void {
+  getRequest(query: SearchFormDataModel): Observable<ApiResponseModel> {
     this.setParam(query);
 
-    this.http.get<ApiResponseModel>(apiUrl, {
+    return this.http.get<ApiResponseModel>(apiUrl, {
       params: this.params
-    }).subscribe((data) => {
-      this.imagesData = data;
     });
   }
 
   // TODO ? params[param]
-  setParam(params: any): void {
+  setParam(params: SearchFormQueryParamsModel): void {
     for (const param of Object.keys(params)) {
+      // @ts-ignore
       this.params = this.params.set(param, params[param]);
     }
   }

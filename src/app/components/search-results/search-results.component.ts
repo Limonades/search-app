@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ApiResponseModel } from '../../models/api-response.model';
 
 @Component({
   selector: 'app-search-results',
@@ -6,5 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent {
+  @Input() searchResult?: ApiResponseModel;
+
   constructor() { }
 }
