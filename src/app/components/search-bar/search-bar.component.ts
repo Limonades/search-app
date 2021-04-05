@@ -1,20 +1,30 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
-import { SearchService } from '../../services/searchService/search.service';
 import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SearchFormDataModel } from '../../models/search-form-data.model';
-
+import { Params } from '@angular/router';
+import { SearchFormValuesModel } from '../../models/search-form-values.model';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss']
+  styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnInit{
-  public qtyOptions = SEARCH_OPTIONS.per_page.values;
+export class SearchBarComponent implements OnInit, OnChanges {
   @Output() formUpdates: EventEmitter<SearchFormDataModel> = new EventEmitter();
+  @Input() queryParams?: Params;
+
+  qtyOptions = SEARCH_OPTIONS.per_page.values;
 
   searchForm = new FormGroup({
     query: new FormControl(''),
@@ -25,10 +35,40 @@ export class SearchBarComponent implements OnInit{
 
   ngOnInit(): void {
     this.searchForm.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-      )
-      .subscribe(form => this.formUpdates.emit(form));
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((form) => {
+        // TODO ?
+        if (form.query && form.query.trim().length) {
+          return this.formUpdates.emit({
+            q: form.query,
+            per_page: form.perPageQty,
+          });
+        }
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.queryParams.currentValue) {
+      this.searchForm.setValue(
+        this.parseQueryParams(changes.queryParams.currentValue)
+      );
+    }
+  }
+
+  parseQueryParams(params: Params): SearchFormValuesModel {
+    const values: SearchFormValuesModel = {
+      query: null,
+      perPageQty: null,
+    };
+
+    if (params.q) {
+      values.query = params.q;
+    }
+
+    if (params.per_page) {
+      values.perPageQty = params.per_page;
+    }
+
+    return values;
   }
 }
