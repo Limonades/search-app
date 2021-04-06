@@ -4,7 +4,10 @@
     *ngFor="let result of searchResult?.hits"
     routerLink="/image-detail/{{result.id}}"
   >
-    <img src="{{result.webformatURL}}" alt="{{result.tags}}">
+    <img
+      [src]="result.webformatURL"
+      [alt]="result.tags"
+    >
   </a>
 
   <div

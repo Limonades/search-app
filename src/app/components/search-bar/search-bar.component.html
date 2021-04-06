@@ -8,7 +8,7 @@
     <select class="select input" formControlName="perPageQty">
       <option
         *ngFor="let option of qtyOptions"
-        value="{{option}}"
+        [value]="option"
       >
         {{option}}
       </option>

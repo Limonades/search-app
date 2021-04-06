@@ -3,8 +3,9 @@ import { SearchService } from '../../services/searchService/search.service';
 import { SearchFormDataModel } from '../../models/search-form-data.model';
 import { ApiResponseModel } from '../../models/api-response.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { isEmptyObject } from '../../utils';
 import { take } from 'rxjs/operators';
+
+import isEmptyObject from '../../helpers/is-empty-object.helper';
 
 @Component({
   selector: 'app-search',

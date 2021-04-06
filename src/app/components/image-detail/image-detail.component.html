@@ -10,7 +10,10 @@
     </div>
     <div class="_content">
       <figure class="_img">
-        <img src="{{imageInfo.largeImageURL}}" alt="{{imageInfo.tags}}">
+        <img
+          [src]="imageInfo.largeImageURL"
+          [alt]="imageInfo.tags"
+        >
       </figure>
       <a
         class="_tag-link"
