@@ -1,7 +1,11 @@
 <div class="_wrap">
-  <figure *ngFor="let result of searchResult?.hits" class="_item">
+  <a
+    class="_item"
+    *ngFor="let result of searchResult?.hits"
+    routerLink="/image-detail/{{result.id}}"
+  >
     <img src="{{result.webformatURL}}" alt="{{result.tags}}">
-  </figure>
+  </a>
 
   <div
     class="_search-placeholder"

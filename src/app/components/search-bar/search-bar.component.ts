@@ -20,7 +20,7 @@ import { SearchFormValuesModel } from '../../models/search-form-values.model';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnInit, OnChanges {
+export class SearchBarComponent implements OnInit {
   @Output() formUpdates: EventEmitter<SearchFormDataModel> = new EventEmitter();
   @Input() queryParams?: Params;
 
@@ -37,29 +37,27 @@ export class SearchBarComponent implements OnInit, OnChanges {
     this.searchForm.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((form) => {
-        // TODO ?
-        if (form.query && form.query.trim().length) {
-          return this.formUpdates.emit({
-            q: form.query,
-            per_page: form.perPageQty,
-          });
-        }
+        return this.formUpdates.emit({
+          q: form.query,
+          per_page: form.perPageQty,
+        });
       });
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.queryParams.currentValue) {
-      this.searchForm.setValue(
-        this.parseQueryParams(changes.queryParams.currentValue)
-      );
+    if (this.queryParams) {
+      this.searchForm.patchValue(this.parseQueryParams(this.queryParams));
     }
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes.queryParams.currentValue) {
+  //     this.searchForm.setValue(
+  //       this.parseQueryParams(changes.queryParams.currentValue)
+  //     );
+  //   }
+  // }
+
   parseQueryParams(params: Params): SearchFormValuesModel {
-    const values: SearchFormValuesModel = {
-      query: null,
-      perPageQty: null,
-    };
+    const values: SearchFormValuesModel = {};
 
     if (params.q) {
       values.query = params.q;

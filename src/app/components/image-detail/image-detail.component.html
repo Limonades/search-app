@@ -1,0 +1,23 @@
+<app-container *ngIf="imageInfo">
+  <div class="_container">
+    <div class="_user-wrap">
+      <figure class="_user-photo">
+        <img src="{{imageInfo.userImageURL || '../assets/avatar-placeholder.gif'}}" alt="user">
+      </figure>
+      <p class="_user-name">
+        {{imageInfo.user}}
+      </p>
+    </div>
+    <div class="_content">
+      <figure class="_img">
+        <img src="{{imageInfo.largeImageURL}}" alt="{{imageInfo.tags}}">
+      </figure>
+      <a
+        class="_tag-link"
+        *ngFor="let tag of imageInfo.tags.split(',');"
+        routerLink="/"
+        [queryParams]="{q: tag.trim()}"
+      >{{tag.trim()}}</a>
+    </div>
+  </div>
+</app-container>

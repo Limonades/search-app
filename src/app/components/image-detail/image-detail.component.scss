@@ -1,0 +1,63 @@
+:host {
+  padding-top: 30px;
+  display: block;
+
+  ._container {
+    display: flex;
+  }
+
+  ._user-photo {
+    margin: 0 0 8px;
+    width: 200px;
+    height: 200px;
+
+    img {
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  ._user-name {
+    color: lightgray;
+    font-size: 12px;
+  }
+
+  ._user-wrap {
+    margin-right: 16px;
+  }
+
+  ._content {
+    margin-left: 16px;
+    width: 100%;
+  }
+
+  ._img {
+    margin: 0 0 14px;
+    display: flex;
+    justify-content: center;
+
+    img {
+      max-height: 60vh;
+    }
+  }
+
+  ._tag-link {
+    display: inline-flex;
+    text-decoration: none;
+    color: black;
+    padding: 8px 16px;
+    border: 1px solid black;
+    border-radius: 25px;
+    font-size: 12px;
+    margin-right: 10px;
+    transition: color .3s linear, background-color .3s linear;
+
+    &:hover {
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
