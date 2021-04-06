@@ -4,6 +4,7 @@ import { SearchFormDataModel } from '../../models/search-form-data.model';
 import { ApiResponseModel } from '../../models/api-response.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { isEmptyObject } from '../../utils';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -32,7 +33,7 @@ export class SearchComponent implements OnInit {
       .subscribe((response) => (this.searchResult = response));
   }
 
-  setSearchValueToQuery(data: SearchFormDataModel): void {
+  private setSearchValueToQuery(data: SearchFormDataModel): void {
     this.router
       .navigate([], {
         queryParams: data,
@@ -41,9 +42,12 @@ export class SearchComponent implements OnInit {
       .then((r) => Promise.resolve());
   }
 
-  getUrlSearchParams(): void {
-    this.activatedRoute.queryParams.subscribe((params) => {
+  private getUrlSearchParams(): void {
+    this.activatedRoute.queryParams.pipe(
+        take(1)
+      ).subscribe((params) => {
       if (!isEmptyObject(params)) {
+        // TODO ?
         this.queryParams = params;
       }
     });

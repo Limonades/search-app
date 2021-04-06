@@ -20,7 +20,7 @@ export class ImageDetailComponent implements OnInit {
     this.getInfo();
   }
 
-  getInfo(): void {
+  private getInfo(): void {
     this.searchService
       .getRequest({
         id: this.activatedRoute.snapshot.paramMap.get('id')!,

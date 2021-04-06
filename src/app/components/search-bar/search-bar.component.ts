@@ -35,7 +35,10 @@ export class SearchBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchForm.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
       .subscribe((form) => {
         return this.formUpdates.emit({
           q: form.query,
@@ -56,7 +59,7 @@ export class SearchBarComponent implements OnInit {
   //   }
   // }
 
-  parseQueryParams(params: Params): SearchFormValuesModel {
+  private parseQueryParams(params: Params): SearchFormValuesModel {
     const values: SearchFormValuesModel = {};
 
     if (params.q) {
