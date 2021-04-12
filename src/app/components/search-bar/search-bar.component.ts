@@ -1,26 +1,26 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
-  OnChanges,
+  Input, OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
-
-import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { SearchFormDataModel } from '../../models/search-form-data.model';
 import { Params } from '@angular/router';
+
+import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
+import { SearchFormDataModel } from '../../models/search-form-data.model';
 import { SearchFormValuesModel } from '../../models/search-form-values.model';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() formUpdates: EventEmitter<SearchFormDataModel> = new EventEmitter();
   @Input() queryParams?: Params;
 
@@ -51,13 +51,9 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes.queryParams.currentValue) {
-  //     this.searchForm.setValue(
-  //       this.parseQueryParams(changes.queryParams.currentValue)
-  //     );
-  //   }
-  // }
+  ngOnDestroy(): void {
+    // TODO ? unsubscribe
+  }
 
   private parseQueryParams(params: Params): SearchFormValuesModel {
     const values: SearchFormValuesModel = {};

@@ -1,23 +1,26 @@
-<app-container *ngIf="imageInfo">
+<!--TODO ? destructuring-->
+<app-container *ngIf="imageInfo$ | async as info">
   <div class="_container">
     <div class="_user-wrap">
       <figure class="_user-photo">
-        <img src="{{imageInfo.userImageURL || '../assets/avatar-placeholder.gif'}}" alt="user">
+        <img
+          src="{{info.hits[0].userImageURL || '../assets/avatar-placeholder.gif'}}"
+          alt="user">
       </figure>
       <p class="_user-name">
-        {{imageInfo.user}}
+        {{info.hits[0].user}}
       </p>
     </div>
     <div class="_content">
       <figure class="_img">
         <img
-          [src]="imageInfo.largeImageURL"
-          [alt]="imageInfo.tags"
+          [src]="info.hits[0].largeImageURL"
+          [alt]="info.hits[0].tags"
         >
       </figure>
       <a
         class="_tag-link"
-        *ngFor="let tag of imageInfo.tags.split(',');"
+        *ngFor="let tag of info.hits[0].tags.split(',');"
         routerLink="/"
         [queryParams]="{q: tag.trim()}"
       >{{tag.trim()}}</a>
