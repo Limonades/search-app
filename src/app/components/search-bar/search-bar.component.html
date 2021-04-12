@@ -1,0 +1,17 @@
+<form class="_form" [formGroup]="searchForm">
+  <label class="label">
+    <span class="label-txt">Enter image name</span>
+    <input class="input" type="text" formControlName="query">
+  </label>
+  <label class="label">
+    <span class="label-txt">Select options</span>
+    <select class="select input" formControlName="perPageQty">
+      <option
+        *ngFor="let option of qtyOptions"
+        [value]="option"
+      >
+        {{option}}
+      </option>
+    </select>
+  </label>
+</form>

@@ -1,0 +1,19 @@
+<div class="_wrap">
+  <a
+    class="_item"
+    *ngFor="let result of searchResult?.hits"
+    routerLink="/image-detail/{{result.id}}"
+  >
+    <img
+      [src]="result.webformatURL"
+      [alt]="result.tags"
+    >
+  </a>
+
+  <div
+    class="_search-placeholder"
+    *ngIf="searchResult?.total === 0"
+  >
+    There are no images that suits your criteria
+  </div>
+</div>
