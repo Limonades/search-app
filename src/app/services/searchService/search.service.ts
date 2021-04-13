@@ -16,7 +16,7 @@ export class SearchService {
     this.params = this.params.set('key', apiKey);
   }
 
-  getRequest(query: SearchFormDataModel): Observable<ApiResponseModel> {
+  getRequest$(query: SearchFormDataModel): Observable<ApiResponseModel> {
     return this.http.get<ApiResponseModel>(apiUrl, {
       // @ts-ignore
       params: this.params.appendAll(query),

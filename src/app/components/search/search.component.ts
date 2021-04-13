@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit {
   getSearchResult(data: SearchFormDataModel): void {
     this.setSearchValueToQuery(data);
 
-    this.searchResult$ = this.searchService.getRequest(data);
+    this.searchResult$ = this.searchService.getRequest$(data);
   }
 
   private setSearchValueToQuery(data: SearchFormDataModel): void {

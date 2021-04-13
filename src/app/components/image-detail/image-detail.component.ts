@@ -24,7 +24,7 @@ export class ImageDetailComponent implements OnInit {
 
   private getInfo(): void {
     this.imageInfo$ = this.searchService
-      .getRequest({
+      .getRequest$({
         id: this.activatedRoute.snapshot.paramMap.get('id')!,
       });
   }

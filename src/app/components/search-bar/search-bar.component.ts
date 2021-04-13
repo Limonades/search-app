@@ -7,8 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Params } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
 import { SearchFormDataModel } from '../../models/search-form-data.model';
@@ -31,13 +32,16 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     perPageQty: new FormControl(SEARCH_OPTIONS.per_page.default),
   });
 
+  private ngUnsubscribe$ = new Subject();
+
   constructor() {}
 
   ngOnInit(): void {
     this.searchForm.valueChanges
       .pipe(
         debounceTime(300),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe$)
       )
       .subscribe((form) => {
         return this.formUpdates.emit({
@@ -52,7 +56,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // TODO ? unsubscribe
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   private parseQueryParams(params: Params): SearchFormValuesModel {
