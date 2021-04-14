@@ -28,15 +28,4 @@ export class ImageDetailComponent implements OnInit {
         id: this.activatedRoute.snapshot.paramMap.get('id')!,
       });
   }
-
-  // TODO ? destructuring
-  // private getInfo(): void {
-  //   this.searchService
-  //     .getRequest({
-  //       id: this.activatedRoute.snapshot.paramMap.get('id')!,
-  //     })
-  //     .subscribe((data) => {
-  //       this.imageInfo = data.hits[0];
-  //     });
-  // }
 }

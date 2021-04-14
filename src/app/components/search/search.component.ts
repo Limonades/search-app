@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class SearchComponent implements OnInit {
   searchResult$: Observable<ApiResponseModel>;
-  queryParams$: Observable<Params>;
+  queryParams: Params;
 
   constructor(
     private searchService: SearchService,
@@ -43,9 +43,8 @@ export class SearchComponent implements OnInit {
   }
 
   private getUrlSearchParams(): void {
-    this.queryParams$ = this.activatedRoute.queryParams.pipe(
-        take(1),
-        filter(params => !isEmptyObject(params))
-    );
+    const params = this.activatedRoute.snapshot.queryParams;
+
+    this.queryParams = !isEmptyObject(params) ? params : null;
   }
 }

@@ -1,7 +1,7 @@
 <app-container>
   <app-search-bar
     (formUpdates)="getSearchResult($event)"
-    [queryParams]="queryParams$ | async"
+    [queryParams]="queryParams"
   ></app-search-bar>
 </app-container>
 <hr>
