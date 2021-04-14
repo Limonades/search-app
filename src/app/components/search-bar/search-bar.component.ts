@@ -1,26 +1,27 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
-  OnChanges,
+  Input, OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Params } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SEARCH_OPTIONS } from 'src/app/configs/search-options.config';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SearchFormDataModel } from '../../models/search-form-data.model';
-import { Params } from '@angular/router';
 import { SearchFormValuesModel } from '../../models/search-form-values.model';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() formUpdates: EventEmitter<SearchFormDataModel> = new EventEmitter();
   @Input() queryParams?: Params;
 
@@ -31,13 +32,16 @@ export class SearchBarComponent implements OnInit {
     perPageQty: new FormControl(SEARCH_OPTIONS.per_page.default),
   });
 
+  private ngUnsubscribe$ = new Subject();
+
   constructor() {}
 
   ngOnInit(): void {
     this.searchForm.valueChanges
       .pipe(
         debounceTime(300),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe$)
       )
       .subscribe((form) => {
         return this.formUpdates.emit({
@@ -51,13 +55,10 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes.queryParams.currentValue) {
-  //     this.searchForm.setValue(
-  //       this.parseQueryParams(changes.queryParams.currentValue)
-  //     );
-  //   }
-  // }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
 
   private parseQueryParams(params: Params): SearchFormValuesModel {
     const values: SearchFormValuesModel = {};

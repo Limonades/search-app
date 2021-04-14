@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SearchService } from '../../services/searchService/search.service';
 import { ActivatedRoute } from '@angular/router';
-import { HitsInterface } from '../../models/api-response.model';
+import { ApiResponseModel, HitsInterface } from '../../models/api-response.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-img-detail',
   templateUrl: './image-detail.component.html',
   styleUrls: ['./image-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageDetailComponent implements OnInit {
-  imageInfo?: HitsInterface;
+  imageInfo$?: Observable<ApiResponseModel>;
 
   constructor(
     private searchService: SearchService,
@@ -21,12 +23,9 @@ export class ImageDetailComponent implements OnInit {
   }
 
   private getInfo(): void {
-    this.searchService
-      .getRequest({
+    this.imageInfo$ = this.searchService
+      .getRequest$({
         id: this.activatedRoute.snapshot.paramMap.get('id')!,
-      })
-      .subscribe((data) => {
-        this.imageInfo = data.hits[0];
       });
   }
 }

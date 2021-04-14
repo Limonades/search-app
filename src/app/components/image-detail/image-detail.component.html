@@ -1,23 +1,25 @@
-<app-container *ngIf="imageInfo">
+<app-container *ngIf="(imageInfo$ | async)?.hits[0] as info">
   <div class="_container">
     <div class="_user-wrap">
       <figure class="_user-photo">
-        <img src="{{imageInfo.userImageURL || '../assets/avatar-placeholder.gif'}}" alt="user">
+        <img
+          src="{{info.userImageURL || '../assets/avatar-placeholder.gif'}}"
+          alt="user">
       </figure>
       <p class="_user-name">
-        {{imageInfo.user}}
+        {{info.user}}
       </p>
     </div>
     <div class="_content">
       <figure class="_img">
         <img
-          [src]="imageInfo.largeImageURL"
-          [alt]="imageInfo.tags"
+          [src]="info.largeImageURL"
+          [alt]="info.tags"
         >
       </figure>
       <a
         class="_tag-link"
-        *ngFor="let tag of imageInfo.tags.split(',');"
+        *ngFor="let tag of info.tags.split(',');"
         routerLink="/"
         [queryParams]="{q: tag.trim()}"
       >{{tag.trim()}}</a>
